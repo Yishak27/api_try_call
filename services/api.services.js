@@ -14,7 +14,11 @@ class APIService {
                             message: `Failed to fetch data: ${response.statusText}`
                         }
                     }
-                    return await response.json();
+                    return {
+                        status: true,
+                        message: "success.",
+                        data: await response.json()
+                    };
                 } catch (error) {
                     lastError = error;
                     console.log(`Attempt ${attempt} failed: ${error.message}`);

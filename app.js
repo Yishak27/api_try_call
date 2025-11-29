@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
 app.get("/getData", async (req, res) => {
     try {
-        const url = "fake api fortesting";
+        const url = "https://jsonplaceholder.typicode.com/posts/1";
         const data = await APIService.fetchWithRetry(url);
         if (data && data.status) {
             return res.status(200).send(data)
