@@ -17,10 +17,11 @@ app.get("/getData", async (req, res) => {
     try {
         const url = "fake api fortesting";
         const data = await APIService.fetchWithRetry(url);
-        return res.status(200).send({
-            success: true,
-            data
-        })
+        if (data && data.status) {
+            return res.status(200).send(data)
+        } else {
+            return res.status(400).send(data)
+        }
     } catch (error) {
         console.log('error in route,', error);
         return res.status(500).send({
@@ -28,6 +29,10 @@ app.get("/getData", async (req, res) => {
             message: "Internal server error."
         })
     }
+})
+
+app.use((req, res) => {
+    return res.status(404).send("Resource not found")
 })
 
 app.listen(port, () => {

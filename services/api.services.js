@@ -9,20 +9,29 @@ class APIService {
                     console.log(`Attemptss ,,, ${attempt}/${retries}...`);
                     const response = await fetch(url);
                     if (!response.ok) {
-                        throw new Error(`HTTP Error: ${response.status}`);
+                        return {
+                            success: false,
+                            message: `Failed to fetch data: ${response.statusText}`
+                        }
                     }
                     return await response.json();
                 } catch (error) {
                     lastError = error;
                     console.log(`Attempt ${attempt} failed: ${error.message}`);
                     if (attempt === retries) {
-                        throw new Error(`All retries failed: ${lastError.message}`);
+                        return {
+                            success: false,
+                            message: `All retries failed: ${lastError.message}`
+                        }
                     }
                     await new Promise(res => setTimeout(res, constant.Config.RETRY_TIMEOUT));
                 }
             }
         } catch (error) {
-
+            return {
+                success: false,
+                message: `Failed to fetch data: ${error.message}`
+            }
         }
     }
 }
